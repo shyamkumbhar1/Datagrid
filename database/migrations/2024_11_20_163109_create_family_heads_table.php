@@ -12,15 +12,15 @@ class CreateFamilyHeadsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->date('birthdate');
+            // $table->date('birthdate');
             $table->string('mobile_no', 15);
             $table->text('address');
             $table->string('state');
             $table->string('city');
             $table->string('pincode', 10);
             $table->enum('marital_status', ['Married', 'Unmarried']);
-            $table->date('wedding_date')->nullable();
-            $table->text('hobbies')->nullable();
+            // $table->date('wedding_date')->nullable();
+            $table->json('hobbies')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
         });

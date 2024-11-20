@@ -8,6 +8,12 @@ use Carbon\Carbon;
 
 class FamilyController extends Controller
 {
+
+    public function index()
+{
+    $familyHeads = FamilyHead::all(); // Or any data you want to show
+    return view('family.list', compact('familyHeads'));
+}
     public function create()
     {
         return view('family.create');
@@ -15,6 +21,7 @@ class FamilyController extends Controller
 
     public function store(Request $request)
     {
+        // dd( $request->all());
         // Server-side validation
         $request->validate([
             'name' => 'required|string',
@@ -27,7 +34,7 @@ class FamilyController extends Controller
             'pincode' => 'required|numeric',
             'marital_status' => 'required|in:Married,Unmarried',
             'wedding_date' => 'nullable|date|after_or_equal:birthdate',
-            'hobbies' => 'nullable|string',
+            'hobbies' => 'nullable|array',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -43,32 +50,48 @@ class FamilyController extends Controller
         $familyHead->pincode = $request->pincode;
         $familyHead->marital_status = $request->marital_status;
         $familyHead->wedding_date = $request->marital_status === 'Married' ? $request->wedding_date : null;
-        $familyHead->hobbies = $request->hobbies ? implode(',', $request->hobbies) : null;
+        // $familyHead->hobbies = $request->hobbies;
+        $familyHead->hobbies = $request->hobbies ? json_encode($request->hobbies) : null;
 
         if ($request->hasFile('photo')) {
             $familyHead->photo = $request->file('photo')->store('photos');
         }
 
         $familyHead->save();
+        
+        // return redirect()->route('family.list');
+        return redirect()->route('family.addMembers', ['familyHeadId' => $familyHead->id]);
+    }
 
-        // Store family members data
+    public function addMembers($familyHeadId)
+{
+    $familyHead = FamilyHead::findOrFail($familyHeadId);
+    return view('family.addMembers', compact('familyHead', 'familyHeadId'));
+}
+
+
+    public function storeMembers(Request $request)
+    {
+        // Validate the family members data
+        foreach ($request->family_members as $member) {
+            $request->validate([
+                'family_members.*.name' => 'required|string',
+                'family_members.*.birthdate' => 'required|date',
+                // Other validation rules...
+            ]);
+        }
+
+        // Store each family member
         foreach ($request->family_members as $member) {
             $familyMember = new FamilyMember;
-            $familyMember->family_head_id = $familyHead->id;
+            $familyMember->family_head_id = $request->family_head_id;
             $familyMember->name = $member['name'];
             $familyMember->birthdate = $member['birthdate'];
-            $familyMember->marital_status = $member['marital_status'];
-            $familyMember->wedding_date = $member['marital_status'] === 'Married' ? $member['wedding_date'] : null;
-            $familyMember->education = $member['education'];
-            
-            if (isset($member['photo'])) {
-                $familyMember->photo = $member['photo']->store('photos');
-            }
-
+            // Other member fields...
             $familyMember->save();
         }
 
-        return redirect()->route('family.list');
+        return redirect()->route('family.list'); // Redirect to family list page
     }
 
     public function list()
