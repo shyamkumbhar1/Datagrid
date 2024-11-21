@@ -18,7 +18,9 @@
             <p><strong>Hobbies:</strong> {{ $familyHead->hobbies }}</p>
         </div>
         <div class="col-md-6">
-            <img src="{{ asset('storage/' . $familyHead->photo) }}" alt="Family Head Photo" class="img-fluid">
+            <!-- <img src="{{ asset('storage/' . $familyHead->photo) }}" alt="Family Head Photo" class="img-fluid"> -->
+            <img src="{{ asset('storage/' . $familyHead->photo) }}" alt="Family Head Photo" class="img-fluid" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+
         </div>
     </div>
 

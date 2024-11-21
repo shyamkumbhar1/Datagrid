@@ -117,7 +117,7 @@
         <!-- Photo -->
         <div class="form-group">
             <label for="photo">Photo:</label>
-            <input type="file" class="form-control" id="photo" name="photo" required>
+            <input type="file" class="form-control" id="photo" name="photo"  required>
             @error('photo') 
                 <div class="text-danger">{{ $message }}</div> 
             @enderror
