@@ -23,10 +23,13 @@ class FamilyController extends Controller
         return view('family.list', compact('familyHeads'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $stateCityData = config('state_city');
-        return view('family.create', compact('stateCityData'));
+    $selectedState = $request->old('state', '');  
+
+    $cities = $selectedState ? $stateCityData[$selectedState] : [];
+        return view('family.create', compact('stateCityData','cities'));
     }
 
     public function store(FamilyHeadRequest $request)

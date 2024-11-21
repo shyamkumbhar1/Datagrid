@@ -57,10 +57,10 @@
 
         <div class="form-group">
     <label for="state">State:</label>
-    <select class="form-control" id="state" name="state" required>
+    <select class="form-control" id="state" name="state"   required>
         <option value="">Select State</option>
         @foreach(array_keys($stateCityData) as $state)
-            <option value="{{ $state }}">{{ $state }}</option>
+        <option value="{{ $state }}" {{ old('state') == $state ? 'selected' : '' }}>{{ $state }}</option>
         @endforeach
     </select>
     @error('state') 
@@ -73,11 +73,15 @@
     <label for="city">City:</label>
     <select class="form-control" id="city" name="city" required>
         <option value="">Select City</option>
+        @foreach($cities as $city)
+            <option value="{{ $city }}" {{ old('city') == $city ? 'selected' : '' }}>{{ $city }}</option>
+        @endforeach
     </select>
     @error('city') 
         <div class="text-danger">{{ $message }}</div> 
     @enderror
 </div>
+
 
         <!-- Pincode -->
         <div class="form-group">
