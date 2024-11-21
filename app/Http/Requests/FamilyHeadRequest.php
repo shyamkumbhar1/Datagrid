@@ -26,13 +26,13 @@ class FamilyHeadRequest extends FormRequest
             'name' => 'required|string',
             'surname' => 'required|string',
             'birthdate' => 'required|date|before:' . Carbon::now()->subYears(21)->toDateString(),
-            'mobile_no' => 'required|numeric',
+            'mobile_no' => 'required|numeric|digits:10',
             'address' => 'required|string',
             'state' => 'required|string',
             'city' => 'required|string',
             'pincode' => 'required|numeric|digits:6',
             'marital_status' => 'required|in:Married,Unmarried',
-            'wedding_date' => 'nullable|date|after_or_equal:birthdate',
+            'wedding_date' => 'nullable|date|after_or_equal:' . Carbon::parse($this->birthdate)->addYears(18)->toDateString(),
             'hobbies' => 'nullable|array',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
@@ -41,6 +41,7 @@ class FamilyHeadRequest extends FormRequest
     {
         return [
             'birthdate.before' => 'Age must be greater than 21.',
+            'wedding_date.after_or_equal' => 'The wedding date must be at least 18 years after the birthdate.',
         ];
     }
     protected function prepareForValidation()

@@ -94,8 +94,9 @@
         </div>
 
         <!-- Wedding Date -->
-        <div class="form-group">
-            <label for="wedding_date">Wedding Date:</label>
+       
+        <div class="form-group" id="wedding-date-container" style="display: none;">
+        <label for="wedding_date">Wedding Date:</label>
             <input type="date" class="form-control" id="wedding_date" name="wedding_date" value="{{ old('wedding_date') }}">
             @error('wedding_date') 
                 <div class="text-danger">{{ $message }}</div> 
@@ -131,14 +132,30 @@
 
 @push('scripts')
 <script>
-    function addHobby() {
-        const container = document.getElementById('hobbies-container');
-        const inputCount = container.querySelectorAll('input').length;
-        const newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.className = 'form-control mb-2';
-        newInput.name = `hobbies[${inputCount}]`;
-        container.appendChild(newInput);
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const maritalStatus = document.getElementById('marital_status');
+        const weddingDateContainer = document.getElementById('wedding-date-container');
+        const hobbiesContainer = document.getElementById('hobbies-container');
+
+        function toggleWeddingDate() {
+            weddingDateContainer.style.display = maritalStatus.value === 'Married' ? 'block' : 'none';
+        }
+
+        toggleWeddingDate();
+
+        maritalStatus.addEventListener('change', toggleWeddingDate);
+
+        function addHobby() {
+            const inputCount = hobbiesContainer.querySelectorAll('input').length;
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'form-control mb-2';
+            newInput.name = `hobbies[${inputCount}]`;
+            hobbiesContainer.appendChild(newInput);
+        }
+
+        window.addHobby = addHobby;
+    });
 </script>
+
 @endpush
