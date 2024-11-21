@@ -1,85 +1,57 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\FamilyHead;
-use App\Models\FamilyMember;
-use Carbon\Carbon;
 use App\Http\Requests\FamilyHeadRequest;
+use App\Http\Requests\StoreFamilyMembersRequest;
+use App\Models\FamilyHead;
+use App\Services\FamilyMemberService;
+use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
+    protected $familyMemberService;
 
-    public function index()
-{
-    $familyHeads = FamilyHead::all();   
-    return view('family.list', compact('familyHeads'));
-}
-    public function create()
+    public function __construct(FamilyMemberService $familyMemberService)
     {
-        $stateCityData = config('state_city');        
-        return view('family.create',compact('stateCityData'));
+        $this->familyMemberService = $familyMemberService;
     }
 
-    public function store(FamilyHeadRequest  $request)
+    public function index()
     {
-        // dd( $request->all());
-        $familyHead = FamilyHead::create($request->validated());      
+        $familyHeads = FamilyHead::all();
+        return view('family.list', compact('familyHeads'));
+    }
+
+    public function create()
+    {
+        $stateCityData = config('state_city');
+        return view('family.create', compact('stateCityData'));
+    }
+
+    public function store(FamilyHeadRequest $request)
+    {
+        $familyHead = FamilyHead::create($request->validated());
 
         if ($request->hasFile('photo')) {
-            $familyHead->photo = $request->file('photo')->store('photos','public');            
-            $familyHead->save();   
+            $familyHead->photo = $request->file('photo')->store('photos', 'public');
+            $familyHead->save();
         }
 
-             
         return redirect()->route('family.addMembers', ['familyHeadId' => $familyHead->id]);
     }
 
     public function addMembers($familyHeadId)
-{
-    $familyHead = FamilyHead::findOrFail($familyHeadId);
-    return view('family.addMembers', compact('familyHead', 'familyHeadId'));
-}
-
-
-    public function storeMembers(Request $request)
     {
-        // Validate the family members data
-        foreach ($request->family_members as $member) {
-            $request->validate([
-                'family_members.*.name' => 'required|string',
-                'family_members.*.birthdate' => 'required|date',
-                // 'family_members.*.relation' => 'required',
-                // 'family_members.*.birthdate' => 'required',
-                // 'family_members.*.wedding_date' => 'required',
-                // 'family_members.*.education' => 'required',
-                // 'family_members.*.photo' => 'required',
-                
-            ]);       
+        $familyHead = FamilyHead::findOrFail($familyHeadId);
+        return view('family.addMembers', compact('familyHead', 'familyHeadId'));
+    }
 
+    public function storeMembers(StoreFamilyMembersRequest $request)
+    {
+        $this->familyMemberService->storeFamilyMembers($request);
 
-       
-   
-   
-        }
-
-        // Store each family member
-        foreach ($request->family_members as $member) {
-            $familyMember = new FamilyMember;
-            $familyMember->family_head_id = $request->family_head_id;
-            $familyMember->name = $member['name'];
-            $familyMember->birthdate = $member['birthdate'];
-            // $familyMember->relation = $member['relation'];
-            // $familyMember->birthdate = $member['birthdate'];
-            // $familyMember->wedding_date = $member['wedding_date'];
-            // $familyMember->education = $member['education'];
-            // $familyMember->photo = $member['photo'];
-            
-            // Other member fields...
-            $familyMember->save();
-        }
-
-        return redirect()->route('family.list'); // Redirect to family list page
+        return redirect()->route('family.list');
     }
 
     public function list()

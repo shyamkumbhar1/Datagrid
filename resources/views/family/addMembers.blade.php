@@ -139,32 +139,16 @@
     });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const maritalStatus = document.getElementById('marital_status');
-        const weddingDateContainer = document.getElementById('wedding-date-container');
-        const hobbiesContainer = document.getElementById('hobbies-container');
+    document.querySelector('[name="family_members[0][marital_status]"]').addEventListener('change', function() {
+    const weddingDateContainer = document.getElementById('wedding-date-container');
+    if (this.value === 'Married') {
+        weddingDateContainer.style.display = 'block';
+    } else {
+        weddingDateContainer.style.display = 'none';
+    }
+});
 
-        function toggleWeddingDate() {
-            weddingDateContainer.style.display = maritalStatus.value === 'Married' ? 'block' : 'none';
-        }
-
-        toggleWeddingDate();
-
-        maritalStatus.addEventListener('change', toggleWeddingDate);
-
-        function addHobby() {
-            const inputCount = hobbiesContainer.querySelectorAll('input').length;
-            const newInput = document.createElement('input');
-            newInput.type = 'text';
-            newInput.className = 'form-control mb-2';
-            newInput.name = `hobbies[${inputCount}]`;
-            hobbiesContainer.appendChild(newInput);
-        }
-
-        window.addHobby = addHobby;
-    });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @endpush
 
