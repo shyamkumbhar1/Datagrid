@@ -14,6 +14,7 @@ class FamilyMember extends Model
     protected $fillable = [
         'family_head_id',
         'name',
+        'relation',
         'birthdate',
         'marital_status',
         'wedding_date',

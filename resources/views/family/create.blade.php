@@ -82,7 +82,7 @@
         <!-- Pincode -->
         <div class="form-group">
             <label for="pincode">Pincode:</label>
-            <input type="text" class="form-control" id="pincode" name="pincode" value="{{ old('pincode') }}" required>
+            <input type="text" class="form-control" id="pincode" name="pincode" value="{{ old('pincode') }}" required minlength="6" maxlength="6" >
             @error('pincode') 
                 <div class="text-danger">{{ $message }}</div> 
             @enderror

@@ -49,8 +49,18 @@ class FamilyController extends Controller
             $request->validate([
                 'family_members.*.name' => 'required|string',
                 'family_members.*.birthdate' => 'required|date',
-                // Other validation rules...
-            ]);
+                // 'family_members.*.relation' => 'required',
+                // 'family_members.*.birthdate' => 'required',
+                // 'family_members.*.wedding_date' => 'required',
+                // 'family_members.*.education' => 'required',
+                // 'family_members.*.photo' => 'required',
+                
+            ]);       
+
+
+       
+   
+   
         }
 
         // Store each family member
@@ -59,6 +69,12 @@ class FamilyController extends Controller
             $familyMember->family_head_id = $request->family_head_id;
             $familyMember->name = $member['name'];
             $familyMember->birthdate = $member['birthdate'];
+            // $familyMember->relation = $member['relation'];
+            // $familyMember->birthdate = $member['birthdate'];
+            // $familyMember->wedding_date = $member['wedding_date'];
+            // $familyMember->education = $member['education'];
+            // $familyMember->photo = $member['photo'];
+            
             // Other member fields...
             $familyMember->save();
         }

@@ -14,26 +14,64 @@
             <div class="family-member-form-group" id="family-member-0">
                 <div class="form-group">
                     <label for="family_members[0][name]">Name:</label>
-                    <input type="text" class="form-control" name="family_members[0][name]" required>
+                    <input type="text" class="form-control" name="family_members[0][name]" value="{{ old('family_members.0.name') }}" required>
+                    @error('family_members.0.name') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="family_members[0][relation]">Relation:</label>
+                    <select class="form-control" name="family_members[0][relation]" required>
+                        <option value="Father" {{ old('family_members.0.relation') == 'Father' ? 'selected' : '' }}>Father</option>
+                        <option value="Mother" {{ old('family_members.0.relation') == 'Mother' ? 'selected' : '' }}>Mother</option>
+                        <option value="Brother" {{ old('family_members.0.relation') == 'Brother' ? 'selected' : '' }}>Brother</option>
+                        <option value="Sister" {{ old('family_members.0.relation') == 'Sister' ? 'selected' : '' }}>Sister</option>
+                        <option value="Spouse" {{ old('family_members.0.relation') == 'Spouse' ? 'selected' : '' }}>Spouse</option>
+                        <option value="Other" {{ old('family_members.0.relation') == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                    @error('family_members.0.relation') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="family_members[0][birthdate]">Birthdate:</label>
-                    <input type="date" class="form-control" name="family_members[0][birthdate]" required>
+                    <input type="date" class="form-control" name="family_members[0][birthdate]" value="{{ old('family_members.0.birthdate') }}" required>
+                    @error('family_members.0.birthdate') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="family_members[0][marital_status]">Marital Status:</label>
                     <select class="form-control" name="family_members[0][marital_status]" required>
-                        <option value="Married">Married</option>
-                        <option value="Unmarried">Unmarried</option>
+                        <option value="Married" {{ old('family_members.0.marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
+                        <option value="Unmarried" {{ old('family_members.0.marital_status') == 'Unmarried' ? 'selected' : '' }}>Unmarried</option>
                     </select>
+                    @error('family_members.0.marital_status') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
                 </div>
+
+                <div class="form-group" id="wedding-date-container" style="display: none;">
+                    <label for="wedding_date">Wedding Date:</label>
+                    <input type="date" class="form-control" id="wedding_date" name="wedding_date" value="{{ old('wedding_date') }}">
+                    @error('wedding_date') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
+                </div>
+                
                 <div class="form-group">
                     <label for="family_members[0][education]">Education:</label>
-                    <input type="text" class="form-control" name="family_members[0][education]" required>
+                    <input type="text" class="form-control" name="family_members[0][education]" value="{{ old('family_members.0.education') }}" required>
+                    @error('family_members.0.education') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="family_members[0][photo]">Photo:</label>
                     <input type="file" class="form-control" name="family_members[0][photo]">
+                    @error('family_members.0.photo') 
+                        <div class="text-danger">{{ $message }}</div> 
+                    @enderror
                 </div>
             </div>
         </div>
@@ -58,26 +96,41 @@
         newMemberForm.innerHTML = `
             <div class="form-group">
                 <label for="family_members[${memberCount}][name]">Name:</label>
-                <input type="text" class="form-control" name="family_members[${memberCount}][name]" required>
+                <input type="text" class="form-control" name="family_members[${memberCount}][name]" value="{{ old('family_members.${memberCount}.name') }}" required>
+                @error('family_members.${memberCount}.name') 
+                    <div class="text-danger">{{ $message }}</div> 
+                @enderror
             </div>
             <div class="form-group">
                 <label for="family_members[${memberCount}][birthdate]">Birthdate:</label>
-                <input type="date" class="form-control" name="family_members[${memberCount}][birthdate]" required>
+                <input type="date" class="form-control" name="family_members[${memberCount}][birthdate]" value="{{ old('family_members.${memberCount}.birthdate') }}" required>
+                @error('family_members.${memberCount}.birthdate') 
+                    <div class="text-danger">{{ $message }}</div> 
+                @enderror
             </div>
             <div class="form-group">
                 <label for="family_members[${memberCount}][marital_status]">Marital Status:</label>
                 <select class="form-control" name="family_members[${memberCount}][marital_status]" required>
-                    <option value="Married">Married</option>
-                    <option value="Unmarried">Unmarried</option>
+                    <option value="Married" {{ old('family_members.${memberCount}.marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
+                    <option value="Unmarried" {{ old('family_members.${memberCount}.marital_status') == 'Unmarried' ? 'selected' : '' }}>Unmarried</option>
                 </select>
+                @error('family_members.${memberCount}.marital_status') 
+                    <div class="text-danger">{{ $message }}</div> 
+                @enderror
             </div>
             <div class="form-group">
                 <label for="family_members[${memberCount}][education]">Education:</label>
-                <input type="text" class="form-control" name="family_members[${memberCount}][education]" required>
+                <input type="text" class="form-control" name="family_members[${memberCount}][education]" value="{{ old('family_members.${memberCount}.education') }}" required>
+                @error('family_members.${memberCount}.education') 
+                    <div class="text-danger">{{ $message }}</div> 
+                @enderror
             </div>
             <div class="form-group">
                 <label for="family_members[${memberCount}][photo]">Photo:</label>
                 <input type="file" class="form-control" name="family_members[${memberCount}][photo]">
+                @error('family_members.${memberCount}.photo') 
+                    <div class="text-danger">{{ $message }}</div> 
+                @enderror
             </div>
         `;
 
@@ -85,6 +138,34 @@
         memberCount++;
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const maritalStatus = document.getElementById('marital_status');
+        const weddingDateContainer = document.getElementById('wedding-date-container');
+        const hobbiesContainer = document.getElementById('hobbies-container');
+
+        function toggleWeddingDate() {
+            weddingDateContainer.style.display = maritalStatus.value === 'Married' ? 'block' : 'none';
+        }
+
+        toggleWeddingDate();
+
+        maritalStatus.addEventListener('change', toggleWeddingDate);
+
+        function addHobby() {
+            const inputCount = hobbiesContainer.querySelectorAll('input').length;
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'form-control mb-2';
+            newInput.name = `hobbies[${inputCount}]`;
+            hobbiesContainer.appendChild(newInput);
+        }
+
+        window.addHobby = addHobby;
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @endpush
 
 @endsection
