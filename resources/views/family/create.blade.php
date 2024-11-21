@@ -55,23 +55,29 @@
             @enderror
         </div>
 
-        <!-- State -->
         <div class="form-group">
-            <label for="state">State:</label>
-            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" required>
-            @error('state') 
-                <div class="text-danger">{{ $message }}</div> 
-            @enderror
-        </div>
+    <label for="state">State:</label>
+    <select class="form-control" id="state" name="state" required>
+        <option value="">Select State</option>
+        @foreach(array_keys($stateCityData) as $state)
+            <option value="{{ $state }}">{{ $state }}</option>
+        @endforeach
+    </select>
+    @error('state') 
+        <div class="text-danger">{{ $message }}</div> 
+    @enderror
+</div>
 
-        <!-- City -->
-        <div class="form-group">
-            <label for="city">City:</label>
-            <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}" required>
-            @error('city') 
-                <div class="text-danger">{{ $message }}</div> 
-            @enderror
-        </div>
+<!-- City Dropdown -->
+<div class="form-group">
+    <label for="city">City:</label>
+    <select class="form-control" id="city" name="city" required>
+        <option value="">Select City</option>
+    </select>
+    @error('city') 
+        <div class="text-danger">{{ $message }}</div> 
+    @enderror
+</div>
 
         <!-- Pincode -->
         <div class="form-group">
@@ -156,6 +162,30 @@
         }
 
         window.addHobby = addHobby;
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Define state and city data in JavaScript
+    const stateCityData = @json($stateCityData);
+
+    // Handle state dropdown change event
+    document.getElementById('state').addEventListener('change', function() {
+        const state = this.value;
+        const cityDropdown = document.getElementById('city');
+
+        // Clear city dropdown
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        // Populate cities if a state is selected
+        if (state && stateCityData[state]) {
+            stateCityData[state].forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                cityDropdown.appendChild(option);
+            });
+        }
     });
 </script>
 

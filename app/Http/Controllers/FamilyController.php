@@ -17,7 +17,8 @@ class FamilyController extends Controller
 }
     public function create()
     {
-        return view('family.create');
+        $stateCityData = config('state_city');        
+        return view('family.create',compact('stateCityData'));
     }
 
     public function store(FamilyHeadRequest  $request)
