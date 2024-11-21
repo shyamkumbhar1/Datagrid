@@ -31,4 +31,9 @@ class FamilyHead extends Model
     {
         return $this->hasMany(FamilyMember::class);
     }
+
+    public function getFamilyMembersCountAttribute()
+    {
+        return $this->familyMembers()->count();
+    }
 }

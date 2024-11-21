@@ -12,7 +12,7 @@ class FamilyController extends Controller
 
     public function index()
 {
-    $familyHeads = FamilyHead::all(); // Or any data you want to show
+    $familyHeads = FamilyHead::all();   
     return view('family.list', compact('familyHeads'));
 }
     public function create()
