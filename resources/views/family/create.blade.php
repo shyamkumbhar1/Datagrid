@@ -39,7 +39,8 @@
         <!-- Mobile Number -->
         <div class="form-group">
             <label for="mobile_no">Mobile Number:</label>
-            <input type="text" class="form-control" id="mobile_no" name="mobile_no" value="{{ old('mobile_no') }}" required>
+            <input type="text" class="form-control" id="mobile_no" name="mobile_no" value="{{ old('mobile_no') }}" required pattern="^\d{10}$" title="Please enter a 10-digit mobile number">
+
             @error('mobile_no') 
                 <div class="text-danger">{{ $message }}</div> 
             @enderror
