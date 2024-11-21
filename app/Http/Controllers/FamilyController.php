@@ -22,6 +22,7 @@ class FamilyController extends Controller
 
     public function store(FamilyHeadRequest  $request)
     {
+        // dd( $request->all());
         $familyHead = FamilyHead::create($request->validated());      
 
         if ($request->hasFile('photo')) {

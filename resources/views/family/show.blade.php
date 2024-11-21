@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <h3>Family Members</h3>
+    <h3>Family Members12</h3>
     <ul>
         @foreach ($familyHead->familyMembers as $member)
             <li>

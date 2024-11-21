@@ -33,7 +33,7 @@ class FamilyHeadRequest extends FormRequest
             'pincode' => 'required|numeric|digits:6',
             'marital_status' => 'required|in:Married,Unmarried',
             'wedding_date' => 'nullable|date|after_or_equal:' . Carbon::parse($this->birthdate)->addYears(18)->toDateString(),
-            'hobbies' => 'nullable|array',
+            'hobbies' => 'nullable',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
